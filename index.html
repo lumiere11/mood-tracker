@@ -1,65 +1,13 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mood</title>
-<meta name="description" content="Registro de ánimo minimalista con gráficas y exportación.">
-<meta name="theme-color" content="#fafaf8" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>Mood</title>
 </head>
 <body>
-<main>
-  <header>
-    <h1>Mood</h1>
-    <span id="today" class="muted"></span>
-  </header>
-
-  <section aria-label="Registrar ánimo">
-    <p class="muted">¿Cómo te sientes?</p>
-    <div id="moods" class="moods" role="group" aria-label="Estado de ánimo"></div>
-    <input id="note" type="text" maxlength="140" placeholder="Nota (opcional)" autocomplete="off">
-    <details>
-      <summary>Cambiar fecha y hora</summary>
-      <input id="when" type="datetime-local">
-    </details>
-  </section>
-
-  <section aria-label="Gráficas">
-    <div class="tabs" role="tablist">
-      <button role="tab" data-range="day" aria-selected="true">Día</button>
-      <button role="tab" data-range="week" aria-selected="false">Semana</button>
-      <button role="tab" data-range="month" aria-selected="false">Mes</button>
-    </div>
-    <div class="nav">
-      <button id="prev" aria-label="Anterior">‹</button>
-      <strong id="label"></strong>
-      <button id="next" aria-label="Siguiente">›</button>
-    </div>
-    <div id="chart" class="chart"></div>
-    <div class="stats">
-      <div><b id="avg">–</b><span class="muted">promedio</span></div>
-      <div><b id="count">0</b><span class="muted">registros</span></div>
-    </div>
-  </section>
-
-  <section aria-label="Historial">
-    <div class="row">
-      <h2>Historial</h2>
-      <div class="export">
-        <button id="csv">CSV</button>
-        <button id="json">JSON</button>
-      </div>
-    </div>
-    <ul id="history"></ul>
-    <button id="more" class="link" hidden>Mostrar más</button>
-  </section>
-</main>
-<div id="toast" role="status" aria-live="polite"></div>
-<script src="app.js"></script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
