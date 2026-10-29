@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Mood</string>
-    <string name="title_activity_main">Mood</string>
+    <string name="app_name">Estrés</string>
+    <string name="title_activity_main">Estrés</string>
     <string name="package_name">app.mood.tracker</string>
     <string name="custom_url_scheme">app.mood.tracker</string>
 </resources>
