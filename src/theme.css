@@ -38,8 +38,12 @@ ion-title { font-weight: 600; letter-spacing: -.02em; }
 .row { display: flex; align-items: center; justify-content: space-between; }
 h2 { font-size: 1rem; font-weight: 600; margin: 0; }
 
-.moods { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 8px; }
-.moods ion-button { --padding-start: 0; --padding-end: 0; font-size: 1.8rem; height: 56px; margin: 0; }
+.level { display: flex; align-items: baseline; gap: 10px; margin: 4px 0 -16px; }
+.level b { font-size: 3rem; font-weight: 600; line-height: 1; min-width: 1.4ch; }
+.level span { color: var(--muted); }
+ion-range { padding-inline: 0; }
+.tags { display: flex; flex-wrap: wrap; margin: 4px -4px 0; }
+.save { margin-top: 12px; --border-radius: 10px; --box-shadow: none; height: 48px; }
 .field { margin-top: 12px; --border-color: var(--line); --border-radius: 10px; --padding-start: 12px; --highlight-height: 0; }
 
 ion-segment { --background: transparent; border: 1px solid var(--line); border-radius: 10px; }
@@ -50,14 +54,19 @@ svg.chart { width: 100%; height: auto; display: block; }
 .chart .grid { stroke: var(--line); stroke-width: 1; }
 .chart text { fill: var(--muted); font-size: 11px; }
 .chart .bar { fill: var(--ion-color-primary); }
+.chart .peak { fill: var(--ion-text-color); opacity: .75; }
 .chart .line { fill: none; stroke: var(--ion-color-primary); stroke-width: 2; stroke-linejoin: round; }
 .chart .dot { fill: var(--ion-color-primary); stroke: var(--ion-background-color); stroke-width: 2; }
 .chart .empty { text-anchor: middle; font-size: 13px; }
-.stats { display: flex; gap: 32px; }
+.stats { display: flex; gap: 28px; }
 .stats div { display: grid; }
 .stats b { font-size: 1.5rem; font-weight: 600; }
 
 .history ion-item { --padding-start: 0; --inner-padding-end: 0; --border-color: var(--line); }
-.history .e { font-size: 1.5rem; margin-inline-end: 12px; }
+.history .badge { flex: none; width: 34px; height: 34px; border-radius: 50%; margin-inline-end: 12px; display: grid; place-items: center; color: #fff; font-weight: 600; font-size: .95rem; }
+.legend { margin: 0 0 8px; }
+.triggers { margin-top: 20px; display: grid; gap: 6px; }
+.trigger { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.disclaimer { margin: 0; text-align: center; }
 .history small { display: block; color: var(--muted); }
 .history .note { overflow-wrap: anywhere; white-space: normal; }

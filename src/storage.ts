@@ -1,7 +1,7 @@
 import { Preferences } from '@capacitor/preferences';
 import type { Entry } from './types';
 
-const KEY = 'mood-tracker:v1';
+const KEY = 'stress-tracker:v1';
 
 export async function loadEntries(): Promise<Entry[]> {
   try {
