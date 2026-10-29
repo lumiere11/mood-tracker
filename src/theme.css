@@ -70,3 +70,5 @@ svg.chart { width: 100%; height: auto; display: block; }
 .disclaimer { margin: 0; text-align: center; }
 .history small { display: block; color: var(--muted); }
 .history .note { overflow-wrap: anywhere; white-space: normal; }
+.reminders ion-chip ion-icon { margin-inline-start: 6px; margin-inline-end: -4px; }
+.reminders ion-datetime { margin: 8px auto; }

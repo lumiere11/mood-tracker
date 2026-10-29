@@ -6,6 +6,7 @@ Medidor de estrés minimalista para Android, pensado para quien convive con estr
 - **Gráficas diaria, semanal y mensual:** el día muestra cada registro en su hora; semana y mes muestran el **promedio** de cada día (barra) y el **pico** (punto), con navegación a periodos anteriores.
 - **Resumen del periodo:** promedio, pico, número de registros y qué desencadenantes aparecen más y con qué intensidad media.
 - **Exportar** el historial a CSV o JSON (en Android abre el menú de compartir: Drive, Archivos, correo… útil para llevarlo a una consulta).
+- **Recordatorios diarios:** notificaciones a las horas que elijas (por defecto 10:00, 15:00 y 20:00; hasta 6). Se activan con un interruptor y piden el permiso de notificaciones de Android la primera vez. Solo funcionan en la app de Android, no en el navegador.
 - Modo claro/oscuro automático.
 
 > Es un registro personal, no una herramienta médica. Si el estrés te desborda o dura mucho tiempo, consúltalo con un profesional de la salud.
@@ -39,6 +40,7 @@ npm run dev
 | `src/Chart.tsx` | Gráficas SVG (día: línea; semana/mes: barras de promedio + punto de pico) |
 | `src/period.ts` | Cálculo de los periodos día/semana/mes |
 | `src/types.ts` | Entrada, etiquetas, etiquetas de nivel y color |
+| `src/reminders.ts` | Recordatorios diarios con `@capacitor/local-notifications` |
 | `src/exporter.ts` | Exportación CSV/JSON (compartir en Android, descarga en web) |
 | `src/storage.ts` | Persistencia con `@capacitor/preferences` |
 

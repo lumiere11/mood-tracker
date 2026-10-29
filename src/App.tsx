@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   IonApp, IonButton, IonButtons, IonChip, IonContent, IonDatetime, IonHeader, IonIcon, IonInput,
-  IonItem, IonLabel, IonList, IonPage, IonRange, IonSegment, IonSegmentButton, IonTitle, IonToolbar,
+  IonItem, IonLabel, IonList, IonPage, IonRange, IonSegment, IonSegmentButton, IonTitle, IonToggle, IonToolbar,
   useIonAlert, useIonToast,
 } from '@ionic/react';
 import { chevronBack, chevronForward, close } from 'ionicons/icons';
@@ -9,6 +9,7 @@ import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import Chart from './Chart';
 import { exportEntries, type Format } from './exporter';
 import { fmt, getPeriod, localISO, mean, type Range } from './period';
+import { DEFAULT, MAX_TIMES, applyReminders, isNative, loadReminders, saveReminders, type Reminders } from './reminders';
 import { loadEntries, saveEntries } from './storage';
 import { TAGS, levelColor, levelLabel, type Entry } from './types';
 
@@ -24,10 +25,16 @@ export default function App() {
   const [note, setNote] = useState('');
   const [when, setWhen] = useState<string | null>(null);
   const [pickDate, setPickDate] = useState(false);
+  const [rem, setRem] = useState<Reminders>(DEFAULT);
+  const [addingTime, setAddingTime] = useState(false);
+  const [newTime, setNewTime] = useState('12:00');
   const [toast] = useIonToast();
   const [alert] = useIonAlert();
 
-  useEffect(() => { loadEntries().then(setEntries); }, []);
+  useEffect(() => {
+    loadEntries().then(setEntries);
+    loadReminders().then(setRem);
+  }, []);
 
   const period = useMemo(() => getPeriod(entries, range, offset), [entries, range, offset]);
   const say = (message: string) => toast({ message, duration: 1500, position: 'bottom' });
@@ -54,6 +61,27 @@ export default function App() {
     setPickDate(false);
     Haptics.impact({ style: ImpactStyle.Light }).catch(() => {});
     say('Registrado');
+  };
+
+  const updateReminders = async (next: Reminders) => {
+    setRem(next);
+    saveReminders(next).catch(() => say('No se pudo guardar'));
+    try {
+      if ((await applyReminders(next)) === 'denied') {
+        const off = { ...next, enabled: false };
+        setRem(off);
+        saveReminders(off).catch(() => {});
+        say('Permiso de notificaciones denegado. Actívalo en los ajustes del teléfono.');
+      }
+    } catch {
+      say('No se pudieron programar los recordatorios');
+    }
+  };
+
+  const addTime = () => {
+    if (rem.times.includes(newTime)) return say('Esa hora ya está');
+    updateReminders({ ...rem, times: [...rem.times, newTime].sort() });
+    setAddingTime(false);
   };
 
   const toggleTag = (t: string) => setTags((cur) => (cur.includes(t) ? cur.filter((x) => x !== t) : [...cur, t]));
@@ -208,6 +236,38 @@ export default function App() {
               </IonList>
               {recent.length > shown && (
                 <IonButton expand="block" fill="clear" color="medium" onClick={() => setShown(shown + PAGE)}>Mostrar más</IonButton>
+              )}
+            </section>
+
+            <section className="reminders">
+              <div className="row">
+                <h2>Recordatorios</h2>
+                <IonToggle
+                  checked={rem.enabled} aria-label="Activar recordatorios"
+                  onIonChange={(e) => e.detail.checked !== rem.enabled && updateReminders({ ...rem, enabled: e.detail.checked })}
+                />
+              </div>
+              {!isNative && <p className="muted">Los recordatorios funcionan en la app de Android.</p>}
+              <p className="muted" style={{ margin: '4px 0 0' }}>Un aviso diario a estas horas para registrar tu nivel.</p>
+              <div className="tags">
+                {rem.times.map((t) => (
+                  <IonChip key={t} outline color={rem.enabled ? 'primary' : 'medium'}>
+                    {t}
+                    <IonIcon icon={close} aria-label={`Quitar ${t}`} onClick={() => updateReminders({ ...rem, times: rem.times.filter((x) => x !== t) })} />
+                  </IonChip>
+                ))}
+                {rem.times.length < MAX_TIMES && (
+                  <IonChip outline color="medium" onClick={() => setAddingTime((v) => !v)}>{addingTime ? 'Cancelar' : '+ Añadir hora'}</IonChip>
+                )}
+              </div>
+              {addingTime && (
+                <>
+                  <IonDatetime
+                    presentation="time" hourCycle="h23" value={newTime}
+                    onIonChange={(e) => setNewTime(String(e.detail.value).match(/(\d{2}):(\d{2})/)?.[0] ?? newTime)}
+                  />
+                  <IonButton expand="block" fill="outline" color="medium" onClick={addTime}>Añadir {newTime}</IonButton>
+                </>
               )}
             </section>
 
